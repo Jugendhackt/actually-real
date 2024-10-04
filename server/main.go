@@ -1,6 +1,7 @@
 package main
 
 import (
+	handler "main/api/handler"
 	"time"
 
 	"gorm.io/driver/sqlite"
@@ -30,4 +31,6 @@ func main() {
 
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Image{})
+
+	handler.Ping()
 }
