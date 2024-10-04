@@ -87,8 +87,9 @@ func setupRouter(a *app.App) *gin.Engine {
 		user.Friends = append(user.Friends, friend)
 		friend.Friends = append(friend.Friends, user)
 
-		fmt.Println(user)
-		fmt.Println(friend)
+		a.DB.Save(&user)
+		a.DB.Save(&friend)
+
 	})
 
 	r.POST("/me/friends/requests/sent", func(c *gin.Context) {
