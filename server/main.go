@@ -32,5 +32,5 @@ func main() {
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Image{})
 
-	handler.Ping()
+	handler.StartApi()
 }
