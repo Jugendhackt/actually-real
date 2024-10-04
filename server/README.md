@@ -4,10 +4,13 @@
 
 Alle Endpoints hinter: /api/v0/
 
+- /ping: pong
 - /login: User Authentication (how?)
 - /img/(image hash sha256) for all images (JPEG / WebP / AVIF Bilder)
-- /me/img
+- /me/img/list
   - JSON response with hash of all images from logged in user
+- /me/img/push
+  - Push image to server
 - /me/friends/list
   - JSON response with all friends of user
 - /me/friends/add
