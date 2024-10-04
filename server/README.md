@@ -5,4 +5,14 @@
 Alle Endpoints hinter: /api/v0/
 
 - /login: User Authentication (how?)
-- /img/(image hash sha256) für alle Bilder (JPEG / WebP / AVIF Bilder)
+- /img/(image hash sha256) for all images (JPEG / WebP / AVIF Bilder)
+- /me/img
+  - JSON response with hash of all images from logged in user
+- /me/friends/list
+  - JSON response with all friends of user
+- /me/friends/add
+  - Sent friend request (JSON response wether user exists or not)
+- /me/friends/requests/sent
+  - Sent friend requests that have not yet been accepted
+- /me/friends/requests/self
+  - Friend requests that have been sent to USER
