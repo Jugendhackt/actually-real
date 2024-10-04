@@ -10,7 +10,7 @@ import (
 )
 
 type createUserRequest struct {
-	Name string
+	name string
 }
 
 func setupRouter(a *app.App) *gin.Engine {
@@ -31,10 +31,6 @@ func setupRouter(a *app.App) *gin.Engine {
 		c.String(http.StatusOK, "Not implemented yet.")
 	})
 
-	r.GET("/img/", func(c *gin.Context) {
-
-	})
-
 	r.POST("/me/friends/add", func(c *gin.Context) {
 
 	})
@@ -48,15 +44,15 @@ func setupRouter(a *app.App) *gin.Engine {
 	})
 
 	r.POST("/user/create", func(c *gin.Context) {
-		req := createUserRequest{}
+		var req createUserRequest
 
 		if err := c.BindJSON(&req); err != nil {
 			return
 		}
 
-		fmt.Println(req.Name)
+		fmt.Println(req.name)
 
-		app.CreateUser(a, req.Name)
+		app.CreateUser(a, req.name)
 
 		c.Status(http.StatusCreated)
 	})
