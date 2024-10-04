@@ -9,7 +9,7 @@ Alle Endpoints hinter: /api/v0/
 - /img/(image hash sha256) for all images (JPEG / WebP / AVIF Bilder)
 - /me/img/list
   - JSON response with hash of all images from logged in user
-- /me/img/push
+- /me/img/upload
   - Push image to server
 - /me/friends/list
   - JSON response with all friends of user
