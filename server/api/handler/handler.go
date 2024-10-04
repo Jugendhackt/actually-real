@@ -1,38 +1,27 @@
 package handler
 
 import (
-<<<<<<< HEAD
-<<<<<<< HEAD
 	"fmt"
 	"log"
-=======
->>>>>>> ac427007982396e147c34eed9ec50ff55dd2acd9
-=======
-	"fmt"
-	"log"
->>>>>>> 47accf8e12c12c04a811da5631f4df1f20eebb97
 	"net/http"
 	"os"
 
 	"main/app"
+	"main/database"
 
 	"github.com/gin-gonic/gin"
 )
 
-<<<<<<< HEAD
 type SendFriendRequest struct {
 	Name   string
 	Friend string
 }
 
-func setupRouter() *gin.Engine {
-=======
 type createUserRequest struct {
 	Name string
 }
 
 func setupRouter(a *app.App) *gin.Engine {
->>>>>>> ac427007982396e147c34eed9ec50ff55dd2acd9
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 	r := gin.Default()
@@ -76,17 +65,11 @@ func setupRouter(a *app.App) *gin.Engine {
 		if err := c.BindJSON(&req); err != nil {
 			return
 		}
-		var user app.User
-		var friend app.User
+		var user database.User
+		var friend database.User
 
-		db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
-
-		if err != nil {
-			panic("failed to connect database")
-		}
-
-		db.Where("name = ?", req.Name).First(&user)
-		db.Where("name = ?", req.Friend).First(&friend)
+		a.DB.Where("name = ?", req.Name).First(&user)
+		a.DB.Where("name = ?", req.Friend).First(&friend)
 
 		user.Friends = append(user.Friends, friend)
 		friend.Friends = append(friend.Friends, user)
