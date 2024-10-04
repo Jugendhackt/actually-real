@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -11,6 +12,11 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
+
+type SendFriendRequest struct {
+	Name   string
+	Friend string
+}
 
 func setupRouter() *gin.Engine {
 	// Disable Console Color
@@ -35,7 +41,28 @@ func setupRouter() *gin.Engine {
 	})
 
 	r.POST("/me/friends/add", func(c *gin.Context) {
+		var req SendFriendRequest
 
+		if err := c.BindJSON(&req); err != nil {
+			return
+		}
+		var user app.User
+		var friend app.User
+
+		db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
+
+		if err != nil {
+			panic("failed to connect database")
+		}
+
+		db.Where("name = ?", req.Name).First(&user)
+		db.Where("name = ?", req.Friend).First(&friend)
+
+		user.Friends = append(user.Friends, friend)
+		friend.Friends = append(friend.Friends, user)
+
+		fmt.Println(user)
+		fmt.Println(friend)
 	})
 
 	r.POST("/me/friends/requests/sent", func(c *gin.Context) {
