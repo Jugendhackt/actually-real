@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"main/app"
@@ -51,10 +50,9 @@ func setupRouter(a *app.App) *gin.Engine {
 		req := createUserRequest{}
 
 		if err := c.BindJSON(&req); err != nil {
+			c.Status(http.StatusInternalServerError)
 			return
 		}
-
-		fmt.Println(req.Name)
 
 		app.CreateUser(a, req.Name)
 
