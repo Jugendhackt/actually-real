@@ -44,8 +44,24 @@ func setupRouter(a *app.App) *gin.Engine {
 		c.JSON(http.StatusOK, user.Images)
 	})
 
-	r.GET("/me/friends/list", func(c *gin.Context) {
-		c.String(http.StatusOK, "Not implemented yet.")
+	r.POST("/me/friends/list", func(c *gin.Context) {
+		var req GetName
+
+		if err := c.BindJSON(&req); err != nil {
+			return
+		}
+
+		var user database.User
+
+		a.DB.Where("name = ?", req.Name).First(&user)
+
+		var FriendList []database.User
+
+		a.DB.Model(&user).Association("Friends").Find(&FriendList)
+
+		fmt.Println(FriendList)
+
+		c.JSON(http.StatusOK, FriendList)
 	})
 
 	r.GET("/me/friends/requests/self", func(c *gin.Context) {
