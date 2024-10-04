@@ -1,26 +1,12 @@
 package main
 
 import (
-	handler "main/api/handler"
-	"time"
+	"main/api/handler"
+	"main/app"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
-
-type User struct {
-	ID      uint `gorm:"primaryKey,autoIncrement"`
-	Name    string
-	Friends []User `gorm:"many2many:friends"`
-	Images  []Image
-}
-
-type Image struct {
-	ID      uint `gorm:"primaryKey,autoIncrement"`
-	Path    string
-	UserID  uint
-	Created time.Time
-}
 
 func main() {
 	// Create sqlite database
@@ -31,8 +17,8 @@ func main() {
 	}
 
 	// Imports schema into database
-	db.AutoMigrate(&User{})
-	db.AutoMigrate(&Image{})
+	db.AutoMigrate(&app.User{})
+	db.AutoMigrate(&app.Image{})
 
 	handler.StartApi()
 }

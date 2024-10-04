@@ -4,9 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"main/app"
 )
-
-var db = make(map[string]string)
 
 func setupRouter() *gin.Engine {
 	// Disable Console Color
@@ -39,7 +38,13 @@ func setupRouter() *gin.Engine {
 	})
 
 	r.POST("/user/create", func(c *gin.Context) {
+		var newUser app.User
 
+		if err := c.BindJSON(&newUser); err != nil {
+			return
+		}
+
+		c.IndentedJSON(http.StatusCreated, newUser)
 	})
 
 	r.POST("/user/login", func(c *gin.Context) {
