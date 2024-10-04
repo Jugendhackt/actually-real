@@ -21,6 +21,10 @@ type GetName struct {
 	Name string
 }
 
+type GetPath struct {
+	Path string
+}
+
 func setupRouter(a *app.App) *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
@@ -72,24 +76,21 @@ func setupRouter(a *app.App) *gin.Engine {
 		c.String(http.StatusOK, "Not implemented yet.")
 	})
 
-	r.GET("/img/", func(c *gin.Context) {
-		entries, err := os.ReadDir("./images")
-		if err != nil {
-			log.Fatal(err)
+	r.POST("/img/", func(c *gin.Context) {
+		req := GetPath{}
+
+		if err := c.BindJSON(&req); err != nil {
+			return
 		}
 
-		resp := struct {
-			Files []string
-		}{
-			[]string{},
-		}
+		path := "images/" + req.Path
 
-		for _, e := range entries {
-			log.Println(e.Name())
-			resp.Files = append(resp.Files, e.Name())
+		_, err := os.Stat(path)
+		if err == nil {
+			c.File(path)
+		} else {
+			c.Status(http.StatusNotFound)
 		}
-
-		c.JSON(http.StatusOK, resp)
 	})
 
 	r.POST("/me/friends/add", func(c *gin.Context) {
@@ -118,12 +119,11 @@ func setupRouter(a *app.App) *gin.Engine {
 
 	r.POST("/me/img/upload", func(c *gin.Context) {
 		name := c.PostForm("name")
-		log.Println(name)
+
 		file, err := c.FormFile("image")
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println(file.Filename)
 
 		err = c.SaveUploadedFile(file, "images/"+file.Filename)
 		if err != nil {
