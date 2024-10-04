@@ -21,6 +21,10 @@ type createUserRequest struct {
 	Name string
 }
 
+type UserImageList struct {
+	Name string
+}
+
 func setupRouter(a *app.App) *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
@@ -29,6 +33,19 @@ func setupRouter(a *app.App) *gin.Engine {
 	// Ping test
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
+	})
+
+	r.POST("/me/img/list", func(c *gin.Context) {
+		req := UserImageList{}
+		user := database.User{}
+
+		if err := c.BindJSON(&req); err != nil {
+			return
+		}
+
+		a.DB.Where("name = ?", req.Name).First(&user)
+
+		c.JSON(http.StatusOK, user.Images)
 	})
 
 	r.GET("/me/friends/list", func(c *gin.Context) {
