@@ -23,12 +23,14 @@ type Image struct {
 }
 
 func main() {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	// Create sqlite database
+	db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
+	// Imports schema into database
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Image{})
 
