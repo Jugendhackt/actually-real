@@ -40,8 +40,12 @@ func setupRouter(a *app.App) *gin.Engine {
 		}
 
 		a.DB.Where("name = ?", req.Name).First(&user)
+		log.Println(user)
 
-		c.JSON(http.StatusOK, user.Images)
+		var images []database.Image
+		a.DB.Model(&user).Association("Images").Find(&images)
+
+		c.JSON(http.StatusOK, images)
 	})
 
 	r.POST("/me/friends/list", func(c *gin.Context) {
@@ -113,7 +117,29 @@ func setupRouter(a *app.App) *gin.Engine {
 	})
 
 	r.POST("/me/img/upload", func(c *gin.Context) {
+		name := c.PostForm("name")
+		log.Println(name)
+		file, err := c.FormFile("image")
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(file.Filename)
 
+		err = c.SaveUploadedFile(file, "images/"+file.Filename)
+		if err != nil {
+			log.Fatal(err)
+		}
+		c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
+
+		user := database.User{}
+		a.DB.Where("name = ?", name).First(&user)
+
+		image := database.Image{
+			Path: file.Filename,
+		}
+
+		a.DB.Model(&user).Association("Images").Append(&image)
+		a.DB.Save(&user)
 	})
 
 	r.POST("/user/create", func(c *gin.Context) {
