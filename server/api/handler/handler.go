@@ -1,10 +1,15 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"main/app"
+
+	"github.com/gin-gonic/gin"
+
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func setupRouter() *gin.Engine {
@@ -38,11 +43,20 @@ func setupRouter() *gin.Engine {
 	})
 
 	r.POST("/user/create", func(c *gin.Context) {
+		db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
+
+		if err != nil {
+			panic("failed to connect database")
+		}
+
 		var newUser app.User
 
 		if err := c.BindJSON(&newUser); err != nil {
+			log.Println(newUser)
 			return
 		}
+
+		db.Create(&newUser)
 
 		c.IndentedJSON(http.StatusCreated, newUser)
 	})
