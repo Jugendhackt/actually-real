@@ -10,8 +10,8 @@ type User struct {
 }
 
 type Image struct {
-	ID      uint `gorm:"primaryKey,autoIncrement"`
-	Path    string
-	UserID  uint
-	Created time.Time
+	ID        uint `gorm:"primaryKey,autoIncrement"`
+	Path      string
+	UserID    uint
+	CreatedAt time.Time
 }
