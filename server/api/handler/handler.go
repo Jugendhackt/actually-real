@@ -12,16 +12,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type SendFriendRequest struct {
+type GetNameNameFriend struct {
 	Name   string
 	Friend string
 }
 
-type createUserRequest struct {
-	Name string
-}
-
-type UserImageList struct {
+type GetName struct {
 	Name string
 }
 
@@ -36,7 +32,7 @@ func setupRouter(a *app.App) *gin.Engine {
 	})
 
 	r.POST("/me/img/list", func(c *gin.Context) {
-		req := UserImageList{}
+		req := GetName{}
 		user := database.User{}
 
 		if err := c.BindJSON(&req); err != nil {
@@ -77,7 +73,7 @@ func setupRouter(a *app.App) *gin.Engine {
 	})
 
 	r.POST("/me/friends/add", func(c *gin.Context) {
-		var req SendFriendRequest
+		var req GetNameNameFriend
 
 		if err := c.BindJSON(&req); err != nil {
 			return
@@ -104,7 +100,7 @@ func setupRouter(a *app.App) *gin.Engine {
 	})
 
 	r.POST("/user/create", func(c *gin.Context) {
-		req := createUserRequest{}
+		req := GetName{}
 
 		if err := c.BindJSON(&req); err != nil {
 			c.Status(http.StatusInternalServerError)
