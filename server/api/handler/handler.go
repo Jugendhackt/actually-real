@@ -26,11 +26,23 @@ func setupRouter() *gin.Engine {
 		c.String(http.StatusOK, "Not implemented yet.")
 	})
 
+	r.POST("/me/friends/add", func(c *gin.Context) {
+
+	})
+
 	r.POST("/me/friends/requests/sent", func(c *gin.Context) {
 
 	})
 
 	r.POST("/me/img/upload", func(c *gin.Context) {
+
+	})
+
+	r.POST("/user/create", func(c *gin.Context) {
+
+	})
+
+	r.POST("/user/login", func(c *gin.Context) {
 
 	})
 

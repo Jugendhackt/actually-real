@@ -5,7 +5,6 @@
 Alle Endpoints hinter: /api/v0/
 
 - /ping: pong
-- /login: User Authentication (how?)
 - /img/(image hash sha256) for all images (JPEG / WebP / AVIF Bilder)
 - /me/img/list
   - JSON response with hash of all images from logged in user
@@ -19,3 +18,6 @@ Alle Endpoints hinter: /api/v0/
   - Sent friend requests that have not yet been accepted
 - /me/friends/requests/self
   - Friend requests that have been sent to USER
+- /user/create
+  - Create user post request
+- /user/login: User Authentication (how?)
