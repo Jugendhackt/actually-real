@@ -1,8 +1,15 @@
 package app
 
-type User struct {
-	ID      uint `gorm:"primaryKey,autoIncrement"`
-	Name    string
-	Friends []User `gorm:"many2many:friends"`
-	Images  []Image
+import (
+	"main/database"
+)
+
+func CreateUser(a *App, name string) {
+	var user database.User
+
+	if err := a.DB.Where("name = ?", name).First(&user).Error; err != nil {
+		newUser := database.User{Name: name}
+		a.DB.Create(&newUser)
+		return
+	}
 }

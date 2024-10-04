@@ -1,24 +1,32 @@
 package handler
 
 import (
+<<<<<<< HEAD
 	"fmt"
 	"log"
+=======
+>>>>>>> ac427007982396e147c34eed9ec50ff55dd2acd9
 	"net/http"
 
 	"main/app"
 
 	"github.com/gin-gonic/gin"
-
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
 
+<<<<<<< HEAD
 type SendFriendRequest struct {
 	Name   string
 	Friend string
 }
 
 func setupRouter() *gin.Engine {
+=======
+type createUserRequest struct {
+	Name string
+}
+
+func setupRouter(a *app.App) *gin.Engine {
+>>>>>>> ac427007982396e147c34eed9ec50ff55dd2acd9
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 	r := gin.Default()
@@ -74,22 +82,16 @@ func setupRouter() *gin.Engine {
 	})
 
 	r.POST("/user/create", func(c *gin.Context) {
-		db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
+		req := createUserRequest{}
 
-		if err != nil {
-			panic("failed to connect database")
-		}
-
-		var newUser app.User
-
-		if err := c.BindJSON(&newUser); err != nil {
-			log.Println(newUser)
+		if err := c.BindJSON(&req); err != nil {
+			c.Status(http.StatusInternalServerError)
 			return
 		}
 
-		db.Create(&newUser)
+		app.CreateUser(a, req.Name)
 
-		c.IndentedJSON(http.StatusCreated, newUser)
+		c.Status(http.StatusCreated)
 	})
 
 	r.POST("/user/login", func(c *gin.Context) {
@@ -99,8 +101,8 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-func StartApi() {
-	r := setupRouter()
+func StartApi(app *app.App) {
+	r := setupRouter(app)
 	// Listen and Server in 0.0.0.0:8080
 	r.Run(":8080")
 }
