@@ -22,12 +22,16 @@ func setupRouter() *gin.Engine {
 		c.String(http.StatusOK, "Not implemented yet.")
 	})
 
-	r.GET("/me/friends/requests/sent", func(c *gin.Context) {
+	r.GET("/me/friends/requests/self", func(c *gin.Context) {
 		c.String(http.StatusOK, "Not implemented yet.")
 	})
 
-	r.GET("/me/friends/requests/self", func(c *gin.Context) {
-		c.String(http.StatusOK, "Not implemented yet.")
+	r.POST("/me/friends/requests/sent", func(c *gin.Context) {
+
+	})
+
+	r.POST("/me/img/upload", func(c *gin.Context) {
+
 	})
 
 	return r
