@@ -1,7 +1,10 @@
 package handler
 
 import (
+	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"main/app"
 
@@ -31,7 +34,23 @@ func setupRouter(a *app.App) *gin.Engine {
 	})
 
 	r.GET("/img/", func(c *gin.Context) {
+		entries, err := os.ReadDir("./images")
+		if err != nil {
+			log.Fatal(err)
+		}
 
+		resp := struct {
+			Files []string
+		}{
+			[]string{},
+		}
+
+		for _, e := range entries {
+			log.Println(e.Name())
+			resp.Files = append(resp.Files, e.Name())
+		}
+
+		c.JSON(http.StatusOK, resp)
 	})
 
 	r.POST("/me/friends/add", func(c *gin.Context) {
