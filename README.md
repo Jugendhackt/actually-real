@@ -1,6 +1,5 @@
-# actually-real
+# Moved to (https://git.alpaka.space/berlin-2024/actually-real)[https://git.alpaka.space/berlin-2024/actually-real]
 
-## Tech Stack
+## actually-real
 
-Frontend: Flutter  
-Backend: Selbstgeschrieben in Go
+Made during JugendHackt Berlin 2024, an effort to reimplement a service similar to BeReal, but open-source.
