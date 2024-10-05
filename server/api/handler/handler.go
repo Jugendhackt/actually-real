@@ -68,10 +68,6 @@ func setupRouter(a *app.App) *gin.Engine {
 		c.JSON(http.StatusOK, FriendList)
 	})
 
-	r.GET("/me/friends/requests/self", func(c *gin.Context) {
-		c.String(http.StatusOK, "Not implemented yet.")
-	})
-
 	r.POST("/img/", func(c *gin.Context) {
 		req := GetPath{}
 
@@ -105,11 +101,18 @@ func setupRouter(a *app.App) *gin.Engine {
 		a.DB.Save(&user)
 		a.DB.Save(&friend)
 	})
-
-	r.POST("/me/friends/requests/sent", func(c *gin.Context) {
-
-	})
-
+	// WIP
+	// r.POST("/me/friends/remove", func(c *gin.Context) {
+	//   var req GetNameNameFriend
+	//
+	//   if err:= c.BindJSON(&req); err !=nil {
+	//     return
+	//   }
+	//   var user database.User
+	//   var friend database.User
+	//
+	// }
+	//
 	r.POST("/me/img/upload", func(c *gin.Context) {
 		name := c.PostForm("name")
 
