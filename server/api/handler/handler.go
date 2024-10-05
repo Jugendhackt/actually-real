@@ -36,38 +36,34 @@ func setupRouter(a *app.App) *gin.Engine {
 	})
 
 	r.POST("/me/img/list", func(c *gin.Context) {
-		req := GetName{}
-		user := database.User{}
-
-		if err := c.BindJSON(&req); err != nil {
-			return
-		}
-
-		a.DB.Where("name = ?", req.Name).First(&user)
-		log.Println(user)
-
-		var images []database.Image
-		a.DB.Model(&user).Association("Images").Find(&images)
-
-		c.JSON(http.StatusOK, images)
-	})
-
-	r.POST("/me/friends/list", func(c *gin.Context) {
 		var req GetName
 
 		if err := c.BindJSON(&req); err != nil {
 			return
 		}
 
-		var user database.User
+		var user database.User = getUserFromDB(req.Name, a)
 
-		a.DB.Where("name = ?", req.Name).First(&user)
+		var images []database.Image
+
+		a.DB.Model(&user).Association("Images").Find(&images)
+
+		c.JSON(http.StatusOK, images)
+	})
+
+	r.POST("/me/friends/list", func(c *gin.Context) {
+
+		var req GetName
+
+		if err := c.BindJSON(&req); err != nil {
+			return
+		}
+
+		var user database.User = getUserFromDB(req.Name, a)
 
 		var FriendList []database.User
 
 		a.DB.Model(&user).Association("Friends").Find(&FriendList)
-
-		fmt.Println(FriendList)
 
 		c.JSON(http.StatusOK, FriendList)
 	})
@@ -99,6 +95,7 @@ func setupRouter(a *app.App) *gin.Engine {
 		if err := c.BindJSON(&req); err != nil {
 			return
 		}
+
 		var user database.User
 		var friend database.User
 
@@ -166,4 +163,10 @@ func StartApi(app *app.App) {
 	r := setupRouter(app)
 	// Listen and Server in 0.0.0.0:8080
 	r.Run(":8080")
+}
+
+func getUserFromDB(name string, app *app.App) database.User {
+	var user database.User
+	app.DB.Where("name = ?", name).First(&user)
+	return user
 }
