@@ -72,10 +72,11 @@ func setupRouter(a *app.App) *gin.Engine {
 		c.JSON(http.StatusOK, FriendList)
 	})
 
-	r.GET("/img/", func(c *gin.Context) {
-		entries, err := os.ReadDir("./images")
-		if err != nil {
-			log.Fatal(err)
+	r.POST("/img/", func(c *gin.Context) {
+		req := GetPath{}
+
+		if err := c.BindJSON(&req); err != nil {
+			return
 		}
 
 		path := "images/" + req.Path
