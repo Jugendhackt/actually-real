@@ -1,4 +1,4 @@
-# Moved to (https://git.alpaka.space/berlin-2024/actually-real)[https://git.alpaka.space/berlin-2024/actually-real]
+# Moved to [https://git.alpaka.space/berlin-2024/actually-real](https://git.alpaka.space/berlin-2024/actually-real)
 
 ## actually-real
 
