@@ -96,18 +96,14 @@ func setupRouter(a *app.App) *gin.Engine {
 			return
 		}
 
-		var user database.User
-		var friend database.User
-
-		a.DB.Where("name = ?", req.Name).First(&user)
-		a.DB.Where("name = ?", req.Friend).First(&friend)
+		var user database.User = getUserFromDB(req.Name, a)
+		var friend database.User = getUserFromDB(req.Friend, a)
 
 		user.Friends = append(user.Friends, friend)
 		friend.Friends = append(friend.Friends, user)
 
 		a.DB.Save(&user)
 		a.DB.Save(&friend)
-
 	})
 
 	r.POST("/me/friends/requests/sent", func(c *gin.Context) {
@@ -128,8 +124,7 @@ func setupRouter(a *app.App) *gin.Engine {
 		}
 		c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
 
-		user := database.User{}
-		a.DB.Where("name = ?", name).First(&user)
+		var user database.User = getUserFromDB(name, a)
 
 		image := database.Image{
 			Path: file.Filename,
